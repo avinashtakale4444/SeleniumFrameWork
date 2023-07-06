@@ -7,11 +7,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Base64;
 import java.util.Properties;
 
@@ -25,7 +28,11 @@ public class DriverFactory {
         switch (browserName.toLowerCase().trim()) {
             case "chrome":
                 // driver = new ChromeDriver();
-                tlDriver.set(new ChromeDriver());
+                if (Boolean.parseBoolean(prop.getProperty("remote"))) {
+                    //init_remoteDriver("chrome");
+                } else {
+                    tlDriver.set(new ChromeDriver());
+                }
                 break;
             case "firefox":
                 //  driver = new FirefoxDriver();
@@ -43,6 +50,10 @@ public class DriverFactory {
         getDriver().get(pro.getProperty("url"));
 
         return getDriver();
+    }
+
+    private void init_remoteDriver(String chrome) throws MalformedURLException {
+
     }
 
     public synchronized static WebDriver getDriver() {
